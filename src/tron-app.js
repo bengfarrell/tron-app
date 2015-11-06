@@ -1,4 +1,4 @@
-var tronapp = function() {
+var tronapp = function(config) {
     var self = this;
 
     /** reference to main window */
@@ -9,8 +9,9 @@ var tronapp = function() {
 
     /**
      * start the app
+     * @param {string|object} cfg
      */
-    this.start = function() {
+    this.start = function(config) {
         var tron = require('../lib/tron.js');
 
         this.application = require('app');
@@ -21,7 +22,7 @@ var tronapp = function() {
         });
 
         this.application.on('ready', function() {
-            var cfg = new tron.config();
+            var cfg = new tron.config(config);
             self.mainWindow = new tron.windows().create(cfg);
 
             self.mainWindow.on('closed', function () {
@@ -30,7 +31,7 @@ var tronapp = function() {
         });
     };
 
-    this.start();
+    this.start(config);
 };
 
 module.exports = tronapp;

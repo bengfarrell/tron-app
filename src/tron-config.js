@@ -1,4 +1,6 @@
-var troncfg = function() {
+var fs = require('fs');
+
+var troncfg = function(cfg) {
   var self = this;
 
   /** app defaults */
@@ -15,19 +17,30 @@ var troncfg = function() {
   /**
    * apply args from CLI
    */
-  this.load = function() {
-    process.argv.forEach(function (arg) {
-      var key = arg.split(':')[0];
-      var value = arg.split(':')[1];
+  this.load = function(cfg) {
+    var props = null;
+    if (cfg && typeof cfg === 'string') {
+      props = JSON.parse(fs.readFileSync(cfg));
+    } else if (cfg) {
+      props = cfg;
+    } else {
+      props = {};
+      process.argv.forEach(function (arg) {
+        var key = arg.split(':')[0];
+        var value = arg.split(':')[1];
+        props[key] = value;
+      });
+    }
 
-      if (value != "undefined" && value != undefined && value) {
+    Object.keys(props).forEach(function (key) {
+      if (props[key] != "undefined" && props[key] != undefined && props[key]) {
         for (var c in self.options) {
           if (self.options[c].flags.indexOf(key) != -1) {
             if (self.options[c].type === 'boolean') {
-              value = self.argToBoolean(value);
+              props[key] = self.argToBoolean(props[key]);
             }
-            self[key] = value;
-            console.log("Setting config." + key + " to " + value);
+            self[key] = props[key];
+            console.log("Setting config." + key + " to " + props[key]);
           }
         }
       }
@@ -40,10 +53,11 @@ var troncfg = function() {
    * @returns {boolean}
    */
   this.argToBoolean = function(arg) {
+    if (typeof arg === 'boolean') { return arg; }
     return (arg == "true") ? true : false;
   };
 
-  this.load();
-}
+  this.load(cfg);
+};
 
 module.exports = troncfg;
