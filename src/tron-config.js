@@ -11,7 +11,9 @@ var troncfg = function(cfg) {
   this.verbose = true;
   /*******************/
 
-  this.options = { 'debug': { flags: [ 'd', 'debug', 'D'], type: 'boolean' },
+  this.options = {
+    'debug': { flags: [ 'd', 'debug', 'D'], type: 'boolean' },
+    'fullscreen': { flags: [ 'fullscreen'], type: 'boolean' },
     'html': { flags: ['html'], type: 'string' } };
 
   /**
