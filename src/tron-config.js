@@ -9,6 +9,7 @@ var troncfg = function(cfg) {
   this.frame = true;
   this.fullscreen = false;
   this.verbose = true;
+  this.appPath = __dirname + '/../../../'; // running from within this node module
   /*******************/
 
   this.options = {

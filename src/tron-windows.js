@@ -6,7 +6,7 @@ var tronwin = function() {
      */
     this.create = function(cfg) {
         var window = new BrowserWindow({frame: cfg.frame, fullscreen: cfg.fullscreen});
-        window.loadUrl('file://' + process.cwd() + '/' + cfg.html);
+        window.loadUrl('file://' + cfg.appPath + '/' + cfg.html);
         if (cfg.debug) { window.openDevTools(); }
         return window;
     }
