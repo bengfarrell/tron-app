@@ -3,6 +3,8 @@ var fs = require('fs');
 var troncfg = function(cfg) {
   var self = this;
 
+  this.application = {};
+
   /** app defaults */
   this.html = 'index.html';
   this.debug = false;
@@ -33,6 +35,10 @@ var troncfg = function(cfg) {
         var value = arg.split(':')[1];
         props[key] = value;
       });
+    }
+
+    if (props.application) {
+      this.application = props.application;
     }
 
     Object.keys(props).forEach(function (key) {
