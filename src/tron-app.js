@@ -1,3 +1,6 @@
+var events = require('events');
+var util = require('util');
+
 var tronapp = function(config) {
     var tron = require('../lib/tron.js');
 
@@ -11,6 +14,8 @@ var tronapp = function(config) {
 
     /** reference to native Atom-Shell app instance */
     this.application = require('app');
+
+    events.EventEmitter.call(this);
 
     /**
      * start the app
@@ -41,11 +46,15 @@ var tronapp = function(config) {
         self.mainWindow = new tron.windows().create(self.config);
 
         self.mainWindow.on('closed', function () {
+            self.emit('window_closed', { window: self.mainWindow });
             self.mainWindow = null;
         });
+
+        self.emit('window_created', { window: self.mainWindow });
     };
 
     this.start();
 };
 
+util.inherits(tronapp, events.EventEmitter);
 module.exports = tronapp;
